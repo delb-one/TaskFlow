@@ -1,11 +1,26 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { Button, AppBar, Toolbar, Typography, Box } from '@mui/material';
+import { Button, AppBar, Toolbar, Typography, Box, IconButton } from '@mui/material';
 import LogoutIcon from '@mui/icons-material/Logout';
+import React, { useContext } from 'react';
+import { ColorModeContext } from '../../App';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
 const Navbar = () => {
   const { currentUser, logout } = useAuth();
-  
+  const colorMode = useContext(ColorModeContext);
+  const [mode, setMode] = React.useState(
+    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  );
+
+  React.useEffect(() => {
+    const listener = (e) => setMode(e.matches ? 'dark' : 'light');
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', listener);
+    return () =>
+      window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', listener);
+  }, []);
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -19,40 +34,44 @@ const Navbar = () => {
         <Typography variant="h6" component={Link} to="/" className="text-white no-underline">
           TaskFlow
         </Typography>
-        
-        {currentUser ? (
-          <Box className="flex items-center gap-4">
-            <Typography className="text-white">Ciao, {currentUser}</Typography>
-            <Button 
-              variant="contained" 
-              color="secondary" 
-              startIcon={<LogoutIcon />}
-              onClick={handleLogout}
-              className="bg-white text-primary-500 hover:bg-gray-100"
-            >
-              Logout
-            </Button>
-          </Box>
-        ) : (
-          <Box>
-            <Button 
-              component={Link} 
-              to="/login" 
-              color="inherit"
-              className="text-white"
-            >
-              Login
-            </Button>
-            <Button 
-              component={Link} 
-              to="/register" 
-              color="inherit"
-              className="text-white"
-            >
-              Registrati
-            </Button>
-          </Box>
-        )}
+        <Box className="flex items-center gap-4">
+          <IconButton color="inherit" onClick={colorMode.toggleColorMode}>
+            {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+          </IconButton>
+          {currentUser ? (
+            <>
+              <Typography className="text-white">Ciao, {currentUser}</Typography>
+              <Button 
+                variant="contained" 
+                color="secondary" 
+                startIcon={<LogoutIcon />}
+                onClick={handleLogout}
+                className="bg-white text-primary-500 hover:bg-gray-100"
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <Box>
+              <Button 
+                component={Link} 
+                to="/login" 
+                color="inherit"
+                className="text-white"
+              >
+                Login
+              </Button>
+              <Button 
+                component={Link} 
+                to="/register" 
+                color="inherit"
+                className="text-white"
+              >
+                Registrati
+              </Button>
+            </Box>
+          )}
+        </Box>
       </Toolbar>
     </AppBar>
   );
