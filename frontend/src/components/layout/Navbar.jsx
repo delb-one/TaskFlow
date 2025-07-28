@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Button, AppBar, Toolbar, Typography, Box } from '@mui/material';
@@ -6,6 +5,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 
 const Navbar = () => {
   const { currentUser, logout } = useAuth();
+  
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -22,7 +22,7 @@ const Navbar = () => {
         
         {currentUser ? (
           <Box className="flex items-center gap-4">
-            <Typography className="text-white">Ciao, {currentUser.username}</Typography>
+            <Typography className="text-white">Ciao, {currentUser}</Typography>
             <Button 
               variant="contained" 
               color="secondary" 

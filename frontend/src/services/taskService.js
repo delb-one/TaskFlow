@@ -1,12 +1,13 @@
-import api from './api';
+import api from "./api";
 
 export const getTasks = async (projectId) => {
   const response = await api.get(`/tasks?projectId=${projectId}`);
+
   return response.data;
 };
 
 export const createTask = async (taskData) => {
-  const response = await api.post('/tasks', taskData);
+  const response = await api.post("/tasks", taskData);
   return response.data;
 };
 

@@ -12,6 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import TaskIcon from '@mui/icons-material/Task';
 
 const ProjectCard = ({ project, onEdit, onClick }) => {
+  
   return (
     <Card 
       className="shadow-md hover:shadow-lg transition-shadow cursor-pointer"
@@ -43,7 +44,7 @@ const ProjectCard = ({ project, onEdit, onClick }) => {
         <Box className="mt-4 flex justify-between items-center">
           <Chip 
             icon={<TaskIcon fontSize="small" />}
-            label={`${project.taskCount || 0} tasks`}
+            label={`${project.taskCount || 0 } tasks`}
             size="small"
             variant="outlined"
             className="border-gray-300"

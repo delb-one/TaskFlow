@@ -7,6 +7,7 @@ export const getProjects = async () => {
 
 export const getProjectDetails = async (id) => {
   const response = await api.get(`/projects/${id}`);
+  
   return response.data;
 };
 

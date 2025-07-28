@@ -30,7 +30,7 @@ const TaskList = ({ tasks, onUpdate, onDelete }) => {
       <EmptyState
         title="Nessun task trovato"
         description="Crea il tuo primo task per iniziare a lavorare su questo progetto"
-        buttonText="Crea Task"
+        // buttonText="Crea Task"
       />
     );
   }

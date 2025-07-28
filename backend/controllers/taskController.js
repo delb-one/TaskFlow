@@ -23,6 +23,7 @@ export const createTask = async (req, res) => {
       project: projectId,
       author: req.user._id,
     });
+    
     res.status(201).json(task);
   } catch (error) {
     res.status(500).json({ message: 'Errore nel server' });
@@ -69,6 +70,30 @@ export const deleteTask = async (req, res) => {
 
     await task.deleteOne();
     res.json({ message: 'Task eliminato' });
+  } catch (error) {
+    res.status(500).json({ message: 'Errore nel server' });
+  }
+};
+
+// @desc    Ottieni tutti i task di un progetto
+export const getTasksByProject = async (req, res) => {
+  try {
+    const { projectId } = req.query;
+    if (!projectId) {
+      return res.status(400).json({ message: 'projectId richiesto' });
+    }
+
+    // Verifica esistenza progetto e proprietà
+    const project = await Project.findById(projectId);
+    if (!project) {
+      return res.status(404).json({ message: 'Progetto non trovato' });
+    }
+    if (project.owner.toString() !== req.user._id.toString()) {
+      return res.status(401).json({ message: 'Non autorizzato' });
+    }
+
+    const tasks = await Task.find({ project: projectId });
+    res.json(tasks);
   } catch (error) {
     res.status(500).json({ message: 'Errore nel server' });
   }

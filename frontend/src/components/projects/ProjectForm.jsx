@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Dialog, 
   DialogTitle, 
@@ -10,12 +10,18 @@ import {
 import { createProject, updateProject } from '../../services/projectService';
 
 const ProjectForm = ({ open, onClose, project, onCreate }) => {
+  const isEditMode = !!project;
+
   const [title, setTitle] = useState(project?.title || '');
   const [description, setDescription] = useState(project?.description || '');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const isEditMode = !!project;
+  // Aggiorna i campi quando cambia il progetto
+  useEffect(() => {
+    setTitle(project?.title || '');
+    setDescription(project?.description || '');
+  }, [project]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();

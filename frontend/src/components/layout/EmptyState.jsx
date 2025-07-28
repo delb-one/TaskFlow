@@ -17,10 +17,10 @@ const EmptyState = ({
       <Typography variant="h6" className="mt-4 font-medium">
         {title}
       </Typography>
-      <Typography variant="body1" className="mt-2 text-gray-600 max-w-md mx-auto">
+      <Typography variant="body1" className="mt-2 text-gray-600 ">
         {description}
       </Typography>
-      {buttonText && (
+      {/* {buttonText && (
         <Button
           variant="contained"
           className="mt-4 bg-primary-500 hover:bg-primary-600"
@@ -28,7 +28,7 @@ const EmptyState = ({
         >
           {buttonText}
         </Button>
-      )}
+      )} */}
     </Box>
   );
 };
