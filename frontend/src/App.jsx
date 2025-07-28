@@ -15,11 +15,17 @@ import './index.css';
 export const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 function App() {
-  const [mode, setMode] = useState('light');
+  // Leggi la preferenza dal localStorage, altrimenti usa 'light'
+  const [mode, setMode] = useState(() => localStorage.getItem('colorMode') || 'light');
+
   const colorMode = useMemo(
     () => ({
       toggleColorMode: () => {
-        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+        setMode((prevMode) => {
+          const newMode = prevMode === 'light' ? 'dark' : 'light';
+          localStorage.setItem('colorMode', newMode); // Salva la preferenza
+          return newMode;
+        });
       },
     }),
     []

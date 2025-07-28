@@ -6,21 +6,12 @@ import React, { useContext } from 'react';
 import { ColorModeContext } from '../../App';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { useTheme } from '@mui/material/styles';
 
 const Navbar = () => {
   const { currentUser, logout } = useAuth();
   const colorMode = useContext(ColorModeContext);
-  const [mode, setMode] = React.useState(
-    window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  );
-
-  React.useEffect(() => {
-    const listener = (e) => setMode(e.matches ? 'dark' : 'light');
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', listener);
-    return () =>
-      window.matchMedia('(prefers-color-scheme: dark)').removeEventListener('change', listener);
-  }, []);
-
+  const theme = useTheme();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -36,7 +27,7 @@ const Navbar = () => {
         </Typography>
         <Box className="flex items-center gap-4">
           <IconButton color="inherit" onClick={colorMode.toggleColorMode}>
-            {mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+            {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
           </IconButton>
           {currentUser ? (
             <>
