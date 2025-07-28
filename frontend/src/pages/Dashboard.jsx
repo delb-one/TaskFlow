@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { getProjects } from '../services/projectService';
 import ProjectList from '../components/projects/ProjectList';
 import ProjectForm from '../components/projects/ProjectForm';
-import { Button, Container, Typography, Box } from '@mui/material';
+import { Button, Container, Typography, Box, Alert } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 const Dashboard = () => {
@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [openForm, setOpenForm] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [selectedProject, setSelectedProject] = useState(null);
   const { currentUser } = useAuth();
   const navigate = useNavigate();
 
@@ -36,6 +37,18 @@ const Dashboard = () => {
   const handleCreateProject = (newProject) => {
     setProjects([newProject, ...projects]);
     setOpenForm(false);
+    setSelectedProject(null);
+  };
+
+  const handleUpdateProject = (updatedProject) => {
+    setProjects(projects.map(p => p._id === updatedProject._id ? updatedProject : p));
+    setOpenForm(false);
+    setSelectedProject(null);
+  };
+
+  const handleEditProject = (project) => {
+    setSelectedProject(project);
+    setOpenForm(true);
   };
 
   if (!currentUser) {
@@ -83,13 +96,19 @@ const Dashboard = () => {
         <ProjectList 
           projects={projects} 
           onProjectClick={(id) => navigate(`/projects/${id}`)} 
+          onEdit={handleEditProject}
         />
       )}
 
       <ProjectForm
         open={openForm}
-        onClose={() => setOpenForm(false)}
+        onClose={() => {
+          setOpenForm(false);
+          setSelectedProject(null);
+        }}
+        project={selectedProject}
         onCreate={handleCreateProject}
+        onUpdate={handleUpdateProject}
       />
     </Container>
   );

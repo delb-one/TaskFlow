@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import { createProject, updateProject } from '../../services/projectService';
 
-const ProjectForm = ({ open, onClose, project, onCreate }) => {
+const ProjectForm = ({ open, onClose, project, onCreate, onUpdate }) => {
   const isEditMode = !!project;
 
   const [title, setTitle] = useState(project?.title || '');
@@ -37,10 +37,10 @@ const ProjectForm = ({ open, onClose, project, onCreate }) => {
     try {
       if (isEditMode) {
         const updatedProject = await updateProject(project._id, { title, description });
-        onCreate(updatedProject);
+        onUpdate && onUpdate(updatedProject); // <-- usa onUpdate in edit mode
       } else {
         const newProject = await createProject({ title, description });
-        onCreate(newProject);
+        onCreate && onCreate(newProject); // <-- usa onCreate in create mode
       }
       onClose();
     } catch (err) {
